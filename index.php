@@ -2,28 +2,38 @@
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-  
-// get posted data
-$data_raw_JSON = json_decode(file_get_contents("php://input"));
 
-// set response code - 201 created
+
 http_response_code(200);
  
-$response = array();
-$response['data'] = array( "data_raw_JSON" => $data_raw_JSON );
-$response['data']['data_form_url_encoded'] = array();
-$response['data']['file'] = array();
 
-if ( $_POST && ($data_raw_JSON === null) ) {
+$response = array();
+
+
+//Custom Header : User Name
+$response['headers'] = array();
+if ( array_key_exists("HTTP_USERNAME", $_SERVER) ) {
+    $response['headers']['username'] = $_SERVER['HTTP_USERNAME'] ;
+}
+
+
+// Get raw JSON
+$data_raw_JSON = json_decode(file_get_contents("php://input"));
+$response['data'] = array( "data_raw_JSON" => $data_raw_JSON );
+
+
+//Get form-urlencoded data
+$response['data']['data_form_url_encoded'] = array();
+if ( $_POST && ( $data_raw_JSON === null ) ) {
     foreach ( $_POST as $key => $value ) {
         $response['data']['data_form_url_encoded'][$key] = $value ;
     }
 }
 
-// upload File
+// Upload File
+$response['data']['file'] = array();
 if ( $_FILES){
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["file"]["name"]);
@@ -54,17 +64,7 @@ if ( $_FILES){
 }
 
 
-
-
-
-
-
-
-// tell the user
+// echo filnal JSON
 echo json_encode($response);
-
-
-
-
 
 ?>
