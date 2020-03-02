@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 
 http_response_code(200);
- 
+
 
 $response = array();
 
@@ -31,6 +31,7 @@ if ( $_POST && ( $data_raw_JSON === null ) ) {
         $response['data']['data_form_url_encoded'][$key] = $value ;
     }
 }
+
 
 // Upload File
 $response['data']['file'] = array();
