@@ -18,6 +18,19 @@ if ( array_key_exists("HTTP_USERNAME", $_SERVER) ) {
     $response['headers']['username'] = $_SERVER['HTTP_USERNAME'] ;
 }
 
+if ( array_key_exists("HTTP_USERNAME", $_SERVER) &&  array_key_exists("HTTP_PASSWORD", $_SERVER)  ) {
+
+
+    //Password decoding
+    $password = base64_decode($_SERVER['HTTP_PASSWORD']); 
+
+    //Check username and password
+    if ( ($_SERVER['HTTP_USERNAME'] == "appafarini" ) && ( $password == "123456") ) {
+        $response['authorization_key'] = "YXBwYWZhcmluaS5jb20=";
+    }
+
+}
+
 
 // Get raw JSON
 $data_raw_JSON = json_decode(file_get_contents("php://input"));
