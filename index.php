@@ -32,6 +32,15 @@ if ( $_POST && ( $data_raw_JSON === null ) ) {
     }
 }
 
+//Get data from GET parameters
+$response['data']['data_form_GET_parameters'] = array();
+if ( $_GET  ) {
+    foreach ( $_GET as $key => $value ) {
+        $response['data']['data_form_GET_parameters'][$key] = $value ;
+    }
+    unset($response['data']['data_form_url_encoded']);
+    unset($response['data']['data_raw_JSON']);
+}
 
 // Upload File
 $response['data']['file'] = array();
